@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SASOM Shipping</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#1B1B1B;
+    --accent:#C9FF00;
+    --gray-bg:#F2F2F2;
+    --gray-line:#E7E7E7;
+    --sub:#8A8A8A;
+    --bg:#FAFAFA;
+    --card:#FFFFFF;
+    --line-soft:#F0F0F0;
+    --text:#141414;
+    --amber-bg:#FFF6DC;
+    --amber-text:#6B5900;
+  }
+  html[data-theme="dark"]{
+    --bg:#141414;
+    --card:#1E1E1E;
+    --line-soft:#2A2A2A;
+    --gray-line:#2E2E2E;
+    --text:#F2F2F2;
+    --sub:#9A9A9A;
+    --amber-bg:#2E2810;
+    --amber-text:#E8C84A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter','Noto Sans Thai',sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    transition:background .25s ease,color .25s ease;
+  }
+  [data-th]{display:none;}
+  html[data-lang="th"] [data-en]{display:none;}
+  html[data-lang="th"] [data-th]{display:inline;}
+
+  .wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px;}
+
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:6px 0 20px;
+  }
+  .brand{font-weight:600;font-size:14px;letter-spacing:.02em;color:var(--sub);}
+  .controls{display:flex;gap:8px;align-items:center;}
+
+  .pill-toggle{
+    display:flex;background:var(--card);border:1px solid var(--gray-line);
+    border-radius:999px;padding:3px;gap:2px;
+  }
+  .pill-toggle button{
+    border:none;background:transparent;font-family:inherit;font-size:12px;
+    font-weight:600;padding:6px 12px;border-radius:999px;cursor:pointer;
+    color:var(--sub);transition:all .2s ease;
+  }
+  .pill-toggle button.active{background:var(--accent);color:#141414;}
+
+  .switch{
+    display:flex;align-items:center;gap:10px;background:transparent;
+    padding:8px 4px;
+    cursor:pointer;user-select:none;
+  }
+  .switch span{font-size:13px;font-weight:500;color:var(--text);}
+  .knob-track{
+    width:40px;height:24px;border-radius:999px;background:var(--gray-line);
+    position:relative;transition:background .3s cubic-bezier(.4,0,.2,1);
+    flex-shrink:0;
+  }
+  .knob{
+    position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;
+    background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,.25);
+    transition:transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  html[data-theme="dark"] .knob-track{background:var(--dark);}
+  html[data-theme="dark"] .knob{transform:translateX(16px);}
+
+  h1{font-size:22px;font-weight:600;margin:0 0 20px;}
+  .subline{color:var(--sub);font-size:13px;margin:0 0 24px;}
+
+  .card{
+    background:var(--card);border:1px solid var(--gray-line);
+    border-radius:16px;padding:20px;margin-bottom:16px;
+    opacity:0;transform:translateY(14px);
+  }
+  .card.in{opacity:1;transform:translateY(0);transition:opacity .5s ease,transform .5s ease;}
+
+  .card h2{
+    font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--sub);font-weight:600;margin:0 0 14px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .card h2::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
+
+  .kv-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:14px;
+  }
+  .kv-row:last-child{border-bottom:none;}
+  .kv-label{color:var(--sub);}
+  .kv-val{font-weight:600;font-variant-numeric:tabular-nums;}
+
+  .fee-grid{display:flex;gap:12px;}
+  .fee-item{
+    flex:1;background:var(--gray-bg);border-radius:12px;padding:14px 16px;
+  }
+  html[data-theme="dark"] .fee-item{background:#242424;}
+  .fee-item .label{font-size:12px;color:var(--sub);margin-bottom:6px;}
+  .fee-item .amount{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;}
+  .fee-item .amount .unit{font-size:12px;color:var(--sub);font-weight:500;margin-left:4px;}
+
+  .steps{list-style:none;margin:0;padding:0;counter-reset:step;}
+  .steps li{
+    counter-increment:step;position:relative;padding:0 0 16px 32px;
+    font-size:14px;line-height:1.5;
+  }
+  .steps li:last-child{padding-bottom:0;}
+  .steps li::before{
+    content:counter(step);position:absolute;left:0;top:0;
+    width:20px;height:20px;border-radius:50%;background:var(--dark);color:#fff;
+    font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;
+  }
+  html[data-theme="dark"] .steps li::before{background:var(--accent);color:#141414;}
+  .steps li::after{
+    content:'';position:absolute;left:9px;top:22px;bottom:0;width:1px;background:var(--gray-line);
+  }
+  .steps li:last-child::after{display:none;}
+
+  .filter-row{
+    display:flex;align-items:center;gap:10px;margin:0 0 24px;flex-wrap:wrap;
+  }
+  .filter-label{font-size:12px;color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+  .pill-filter{display:flex;gap:6px;}
+  .pill-filter button{
+    border:1px solid var(--gray-line);background:var(--card);color:var(--sub);
+    font-family:inherit;font-size:12px;font-weight:600;padding:6px 14px;
+    border-radius:999px;cursor:default;
+  }
+  .pill-filter button.active{background:var(--accent);color:#141414;border-color:var(--accent);}
+  .pill-filter button.toggle-pill{cursor:pointer;transition:all .2s ease;}
+  .pill-filter button.toggle-pill:not(.active){background:var(--card);color:var(--sub);border-color:var(--gray-line);}
+
+  .fee-item{transition:opacity .25s ease,transform .25s ease;}
+  .fee-item.hidden{display:none;}
+
+  .packing-main{
+    font-size:14px;font-weight:600;display:flex;align-items:flex-start;gap:8px;
+  }
+  .warn-icon{flex-shrink:0;}
+  .packing-note{
+    font-size:13px;color:var(--sub);font-style:italic;margin:8px 0 0 26px;
+  }
+
+  .breadcrumb{
+    font-size:12px;color:var(--sub);margin:-4px 0 16px;line-height:1.6;
+  }
+  .breadcrumb .sep{margin:0 6px;color:var(--gray-line);}
+
+  @media (max-width:420px){
+    .fee-grid{flex-direction:column;}
+    h1{font-size:19px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">SASOM</div>
+    <div class="controls">
+      <div class="pill-toggle" id="langToggle">
+        <button data-set="en" class="active">EN</button>
+        <button data-set="th">TH</button>
+      </div>
+      <div class="switch" id="themeToggle">
+        <span data-en>Dark</span><span data-th>มืด</span>
+        <div class="knob-track"><div class="knob"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <h1><span data-en>Shipping</span><span data-th>ขนส่ง</span></h1>
+
+  <div class="filter-row">
+    <span class="filter-label" data-en>Country</span>
+    <span class="filter-label" data-th>ประเทศ</span>
+    <div class="pill-filter">
+      <button class="active">US</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Seller Setup</span><span data-th>ตั้งค่า Seller</span></h2>
+    <div class="kv-row">
+      <span class="kv-label" data-en>SASOM Email account type</span>
+      <span class="kv-label" data-th>ประเภทอีเมล SASOM</span>
+      <span class="kv-val">STD Inter</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Shipping Fee (per item)</span><span data-th>ค่าส่ง (รายชิ้น)</span></h2>
+    <div class="filter-row" style="margin:0 0 8px;">
+      <span class="filter-label" data-en>Group</span>
+      <span class="filter-label" data-th>Group</span>
+      <div class="pill-filter">
+        <button class="active">ART</button>
+      </div>
+    </div>
+    <div class="filter-row" style="margin:0 0 8px;">
+      <span class="filter-label" data-en>Category</span>
+      <span class="filter-label" data-th>Category</span>
+      <div class="pill-filter">
+        <button class="active">Trading Card (TCG)</button>
+      </div>
+    </div>
+    <div class="filter-row" style="margin:0 0 16px;">
+      <span class="filter-label" data-en>Sub Category</span>
+      <span class="filter-label" data-th>Sub Category</span>
+      <div class="pill-filter" id="subCatFilter">
+        <button class="toggle-pill active" data-filter="box-pack">Box/Pack</button>
+        <button class="toggle-pill active" data-filter="single-card">Single Card (Grading/Raw)</button>
+      </div>
+    </div>
+    <div class="fee-grid">
+      <div class="fee-item" data-key="box-pack">
+        <div class="label"><span data-en>Box / Pack</span><span data-th>Box/Pack</span></div>
+        <div class="amount">300<span class="unit">฿</span></div>
+      </div>
+      <div class="fee-item" data-key="single-card">
+        <div class="label"><span data-en>Single Card (Grading/Raw)</span><span data-th>Single Card (Grading/Raw)</span></div>
+        <div class="amount">250<span class="unit">฿</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Delivery Schedule</span><span data-th>รอบการจัดส่ง</span></h2>
+    <div class="kv-row">
+      <span class="kv-label" data-en>Frequency</span>
+      <span class="kv-label" data-th>ความถี่</span>
+      <span class="kv-val"><span data-en>2x per week</span><span data-th>2 ครั้ง/สัปดาห์</span></span>
+    </div>
+    <div class="kv-row">
+      <span class="kv-label" data-en>Transit time</span>
+      <span class="kv-label" data-th>ระยะเวลา</span>
+      <span class="kv-val"><span data-en>7–10 days</span><span data-th>7-10 วัน</span></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Process</span><span data-th>ขั้นตอน</span></h2>
+    <ol class="steps">
+      <li>
+        <span data-en>Seller packs product</span>
+        <span data-th>Seller แพ็ค สินค้า</span>
+      </li>
+      <li>
+        <span data-en>Ships items to warehouse address (partner)</span>
+        <span data-th>ส่งของเข้าที่อยู่โกดัง (partner)</span>
+      </li>
+      <li>
+        <span data-en>Seller shares tracking number and Batch ID with the team for shipment tracking</span>
+        <span data-th>Seller แจ้งเลขแทรคและ Batch ID ให้ทีม เพื่อติดตามสถานะการจัดส่ง</span>
+      </li>
+      <li>
+        <span data-en>SASOM Warehouse receives the shipment</span>
+        <span data-th>โกดังสะสมได้รับสินค้า</span>
+      </li>
+      <li>
+        <span data-en>Items are inspected and go through the receiving process</span>
+        <span data-th>ตรวจเช็คสินค้า และเข้ากระบวนการรับเข้าสินค้า</span>
+      </li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Packing Criteria</span><span data-th>เกณฑ์การแพ็ค</span></h2>
+    <div class="kv-row" style="border:none;display:block;">
+      <div class="packing-main">
+        <span class="warn-icon">‼️</span>
+        <span data-en>Every item must be bubble-wrapped to prevent damage in transit</span>
+        <span data-th>ต้องห่อบับเบิ้ลทุกชิ้น เพื่อป้องกันของเสียหายระหว่างส่ง</span>
+      </div>
+      <div class="packing-note">
+        <span data-en>*The US warehouse does not repack.</span>
+        <span data-th>*โกดัง US ไม่มี repack</span>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<script>
+  const html = document.documentElement;
+  const langToggle = document.getElementById('langToggle');
+  langToggle.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    html.setAttribute('data-lang', btn.dataset.set);
+    langToggle.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
+  });
+
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', ()=>{
+    const cur = html.getAttribute('data-theme');
+    html.setAttribute('data-theme', cur==='dark' ? 'light' : 'dark');
+  });
+
+  const subCatFilter = document.getElementById('subCatFilter');
+  subCatFilter.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button.toggle-pill');
+    if(!btn) return;
+    btn.classList.toggle('active');
+    const key = btn.dataset.filter;
+    const feeItem = document.querySelector(`.fee-item[data-key="${key}"]`);
+    if(feeItem) feeItem.classList.toggle('hidden', !btn.classList.contains('active'));
+  });
+
+  const cards = document.querySelectorAll('.card');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.1});
+  cards.forEach(c=>io.observe(c));
+</script>
+</body>
+</html>
