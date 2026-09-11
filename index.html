@@ -183,10 +183,12 @@
     padding:6px;color:var(--sub);user-select:none;
   }
   .map-link{
-    display:inline-block;margin-top:8px;font-size:12px;font-weight:600;color:var(--dark);
-    text-decoration:underline;text-underline-offset:2px;
+    display:inline-flex;align-items:center;margin-top:10px;font-size:12px;font-weight:600;
+    color:var(--text);border:1px solid var(--gray-line);background:var(--card);
+    padding:8px 16px;border-radius:999px;text-decoration:none;transition:border-color .2s ease;
   }
-  html[data-theme="dark"] .map-link{color:var(--accent);}
+  .map-link:hover{border-color:var(--dark);}
+  html[data-theme="dark"] .map-link:hover{border-color:var(--accent);}
   .unlock-btn{
     border:none;background:var(--dark);color:#fff;font-family:inherit;font-weight:600;
     font-size:13px;padding:9px 18px;border-radius:9px;cursor:pointer;flex-shrink:0;
@@ -347,11 +349,6 @@
       <div class="code-error" id="addressError"><span data-en>Incorrect code.</span><span data-th>รหัสไม่ถูกต้อง</span></div>
     </div>
     <div id="addressUnlocked" style="display:none;">
-      <div class="kv-row">
-        <span class="kv-label" data-en>Account</span>
-        <span class="kv-label" data-th>บัญชี</span>
-        <span class="kv-val">ShopShip SSPreusa 2263183</span>
-      </div>
       <div class="kv-row" style="display:block;border-bottom:1px solid var(--line-soft);padding:10px 0;">
         <span class="kv-label" data-en>Address</span>
         <span class="kv-label" data-th>ที่อยู่</span>
@@ -360,9 +357,7 @@
           7910 SW Nimbus Avenue, Unit V<br>
           Beaverton, OR 97008
         </div>
-        <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=7910+SW+Nimbus+Avenue%2C+Unit+V%2C+Beaverton%2C+OR+97008" target="_blank" rel="noopener">
-          <span data-en>View on Google Maps</span><span data-th>ดูใน Google Maps</span>
-        </a>
+        <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=7910+SW+Nimbus+Avenue%2C+Unit+V%2C+Beaverton%2C+OR+97008" target="_blank" rel="noopener">Google Maps</a>
       </div>
       <div class="kv-row" style="border:none;">
         <span class="kv-label" data-en>Tel</span>
