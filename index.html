@@ -168,6 +168,35 @@
   }
   .breadcrumb .sep{margin:0 6px;color:var(--gray-line);}
 
+  .lock-note{font-size:12px;color:var(--sub);margin:-4px 0 14px;line-height:1.5;}
+  .code-row{display:flex;gap:8px;}
+  .code-input-wrap{position:relative;flex:1;min-width:0;display:flex;}
+  .code-input{
+    width:100%;border:1px solid var(--gray-line);background:var(--card);color:var(--text);
+    border-radius:9px;padding:9px 36px 9px 12px;font-family:inherit;font-size:13px;min-width:0;
+  }
+  .code-input:focus{outline:none;border-color:var(--dark);}
+  html[data-theme="dark"] .code-input:focus{border-color:var(--accent);}
+  .eye-btn{
+    position:absolute;right:4px;top:50%;transform:translateY(-50%);
+    border:none;background:transparent;cursor:pointer;font-size:15px;line-height:1;
+    padding:6px;color:var(--sub);user-select:none;
+  }
+  .map-link{
+    display:inline-block;margin-top:8px;font-size:12px;font-weight:600;color:var(--dark);
+    text-decoration:underline;text-underline-offset:2px;
+  }
+  html[data-theme="dark"] .map-link{color:var(--accent);}
+  .unlock-btn{
+    border:none;background:var(--dark);color:#fff;font-family:inherit;font-weight:600;
+    font-size:13px;padding:9px 18px;border-radius:9px;cursor:pointer;flex-shrink:0;
+  }
+  html[data-theme="dark"] .unlock-btn{background:var(--accent);color:#141414;}
+  .code-error{color:#C0392B;font-size:12px;margin-top:8px;display:none;}
+  .code-error.show{display:block;}
+  .addr-block{font-size:14px;line-height:1.7;}
+  .addr-block a{color:inherit;}
+
   @media (max-width:420px){
     .fee-grid{flex-direction:column;}
     h1{font-size:19px;}
@@ -305,6 +334,43 @@
     </div>
   </div>
 
+  <div class="card">
+    <h2><span data-en>Warehouse Address</span><span data-th>ที่อยู่โกดัง</span></h2>
+    <div id="addressLocked">
+      <div class="code-row">
+        <div class="code-input-wrap">
+          <input type="password" id="addressCode" class="code-input" placeholder="Enter code">
+          <button type="button" id="eyeBtn" class="eye-btn" aria-label="Hold to reveal code">👁️</button>
+        </div>
+        <button id="unlockBtn" class="unlock-btn"><span data-en>Unlock</span><span data-th>ปลดล็อก</span></button>
+      </div>
+      <div class="code-error" id="addressError"><span data-en>Incorrect code.</span><span data-th>รหัสไม่ถูกต้อง</span></div>
+    </div>
+    <div id="addressUnlocked" style="display:none;">
+      <div class="kv-row">
+        <span class="kv-label" data-en>Account</span>
+        <span class="kv-label" data-th>บัญชี</span>
+        <span class="kv-val">ShopShip SSPreusa 2263183</span>
+      </div>
+      <div class="kv-row" style="display:block;border-bottom:1px solid var(--line-soft);padding:10px 0;">
+        <span class="kv-label" data-en>Address</span>
+        <span class="kv-label" data-th>ที่อยู่</span>
+        <div class="addr-block" style="margin-top:6px;">
+          Shop and Ship US<br>
+          7910 SW Nimbus Avenue, Unit V<br>
+          Beaverton, OR 97008
+        </div>
+        <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=7910+SW+Nimbus+Avenue%2C+Unit+V%2C+Beaverton%2C+OR+97008" target="_blank" rel="noopener">
+          <span data-en>View on Google Maps</span><span data-th>ดูใน Google Maps</span>
+        </a>
+      </div>
+      <div class="kv-row" style="border:none;">
+        <span class="kv-label" data-en>Tel</span>
+        <span class="kv-label" data-th>โทร</span>
+        <span class="kv-val"><a href="tel:5039465666">(503) 946-5666</a></span>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -333,6 +399,31 @@
     const feeItem = document.querySelector(`.fee-item[data-key="${key}"]`);
     if(feeItem) feeItem.classList.toggle('hidden', !btn.classList.contains('active'));
   });
+
+  const ADDRESS_CODE = 'SASOM_USship01';
+  const addressCode = document.getElementById('addressCode');
+  const addressLocked = document.getElementById('addressLocked');
+  const addressUnlocked = document.getElementById('addressUnlocked');
+  const addressError = document.getElementById('addressError');
+  const unlockBtn = document.getElementById('unlockBtn');
+  function tryUnlock(){
+    if(addressCode.value.trim() === ADDRESS_CODE){
+      addressLocked.style.display = 'none';
+      addressUnlocked.style.display = 'block';
+    } else {
+      addressError.classList.add('show');
+    }
+  }
+  unlockBtn.addEventListener('click', tryUnlock);
+  addressCode.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') tryUnlock(); });
+  addressCode.addEventListener('input', ()=> addressError.classList.remove('show'));
+
+  const eyeBtn = document.getElementById('eyeBtn');
+  const showCode = ()=> addressCode.type = 'text';
+  const hideCode = ()=> addressCode.type = 'password';
+  eyeBtn.addEventListener('mousedown', showCode);
+  eyeBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); showCode(); });
+  ['mouseup','mouseleave','touchend','touchcancel'].forEach(evt => eyeBtn.addEventListener(evt, hideCode));
 
   const cards = document.querySelectorAll('.card');
   const io = new IntersectionObserver((entries)=>{
