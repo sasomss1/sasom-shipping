@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" data-lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SASOM Shipping</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -204,8 +205,6 @@
     h1{font-size:19px;}
   }
 </style>
-</head>
-<body>
 <div class="wrap">
 
   <div class="topbar">
@@ -282,6 +281,22 @@
   </div>
 
   <div class="card">
+    <h2><span data-en>Seller Credit</span><span data-th>Seller Credit</span></h2>
+    <div class="kv-row" style="border:none;display:block;padding:10px 0 0;">
+      <span data-en>Shipping Fee is deducted from your Seller Credit after the shipment is received at the warehouse.</span>
+      <span data-th>ค่า Shipping Fee จะถูกหักจาก Seller Credit หลังจากได้รับสินค้าที่โกดังแล้ว</span>
+    </div>
+    <div class="kv-row" style="border:none;display:block;padding:6px 0 0;">
+      <span data-en>Deduction is based on the actual quantity received, not the declared quantity.</span>
+      <span data-th>คิดค่าส่งตามจำนวนจริงที่เข้าคลัง ไม่ใช่จำนวนที่แจ้งไว้</span>
+    </div>
+    <div class="amber-note">
+      <span data-en>Ship as Box units. If you want packs split out for resale, the team creates a separate Pack-only batch — no shipping fee is charged on that batch.</span>
+      <span data-th>ส่งมาเป็นหน่วย Box หากต้องการแยกขายเป็น Pack ทีมจะสร้าง batch แยกให้ (Pack ล้วน) โดยไม่เก็บค่าส่งสำหรับ batch นั้น</span>
+    </div>
+  </div>
+
+  <div class="card">
     <h2><span data-en>Delivery Schedule</span><span data-th>รอบการจัดส่ง</span></h2>
     <div class="kv-row">
       <span class="kv-label" data-en>Frequency</span>
@@ -349,6 +364,11 @@
       <div class="code-error" id="addressError"><span data-en>Incorrect code.</span><span data-th>รหัสไม่ถูกต้อง</span></div>
     </div>
     <div id="addressUnlocked" style="display:none;">
+      <div class="kv-row">
+        <span class="kv-label" data-en>Warehouse Name</span>
+        <span class="kv-label" data-th>Warehouse Name</span>
+        <span class="kv-val">ShopShip SSPreusa 2263183</span>
+      </div>
       <div class="kv-row" style="display:block;border-bottom:1px solid var(--line-soft);padding:10px 0;">
         <span class="kv-label" data-en>Address</span>
         <span class="kv-label" data-th>ที่อยู่</span>
@@ -431,5 +451,6 @@
   }, {threshold:0.1});
   cards.forEach(c=>io.observe(c));
 </script>
+
 </body>
 </html>
