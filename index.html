@@ -1,555 +1,555 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SASOM Shipping</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="favicon.png">
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-      :root{
-            --dark:#1B1B1B;
-            --accent:#C9FF00;
-            --gray-bg:#F2F2F2;
-            --gray-line:#E7E7E7;
-            --sub:#8A8A8A;
-            --bg:#FAFAFA;
-            --card:#FFFFFF;
-            --line-soft:#F0F0F0;
-            --text:#141414;
-            --amber-bg:#FFF6DC;
-            --amber-text:#6B5900;
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SASOM Shipping</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+Thai:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#1B1B1B;
+    --accent:#C9FF00;
+    --gray-bg:#F2F2F2;
+    --gray-line:#E7E7E7;
+    --sub:#8A8A8A;
+    --bg:#FAFAFA;
+    --card:#FFFFFF;
+    --line-soft:#F0F0F0;
+    --text:#141414;
+    --amber-bg:#FFF6DC;
+    --amber-text:#6B5900;
+  }
+  html[data-theme="dark"]{
+    --bg:#141414;
+    --card:#1E1E1E;
+    --line-soft:#2A2A2A;
+    --gray-line:#2E2E2E;
+    --text:#F2F2F2;
+    --sub:#9A9A9A;
+    --amber-bg:#2E2810;
+    --amber-text:#E8C84A;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter','Noto Sans Thai',sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    transition:background .25s ease,color .25s ease;
+  }
+  [data-th]{display:none;}
+  html[data-lang="th"] [data-en]{display:none;}
+  html[data-lang="th"] [data-th]{display:inline;}
+  .hidden{display:none!important;}
+
+  .wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px;}
+
+  .topbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:6px 0 20px;
+  }
+  .brand{font-weight:600;font-size:14px;letter-spacing:.02em;color:var(--sub);}
+  .controls{display:flex;gap:8px;align-items:center;}
+
+  .pill-toggle{
+    display:flex;background:var(--card);border:1px solid var(--gray-line);
+    border-radius:999px;padding:3px;gap:2px;
+  }
+  .pill-toggle button{
+    border:none;background:transparent;font-family:inherit;font-size:12px;
+    font-weight:600;padding:6px 12px;border-radius:999px;cursor:pointer;
+    color:var(--sub);transition:all .2s ease;
+  }
+  .pill-toggle button.active{background:var(--accent);color:#141414;}
+
+  .switch{
+    display:flex;align-items:center;gap:10px;background:transparent;
+    padding:8px 4px;
+    cursor:pointer;user-select:none;
+  }
+  .switch span{font-size:13px;font-weight:500;color:var(--text);}
+  .knob-track{
+    width:40px;height:24px;border-radius:999px;background:var(--gray-line);
+    position:relative;transition:background .3s cubic-bezier(.4,0,.2,1);
+    flex-shrink:0;
+  }
+  .knob{
+    position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;
+    background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,.25);
+    transition:transform .3s cubic-bezier(.4,0,.2,1);
+  }
+  html[data-theme="dark"] .knob-track{background:var(--dark);}
+  html[data-theme="dark"] .knob{transform:translateX(16px);}
+
+  h1{font-size:22px;font-weight:600;margin:0 0 20px;}
+  .subline{color:var(--sub);font-size:13px;margin:0 0 24px;}
+
+  .card{
+    background:var(--card);border:1px solid var(--gray-line);
+    border-radius:16px;padding:20px;margin-bottom:16px;
+    opacity:0;transform:translateY(14px);
+  }
+  .card.in{opacity:1;transform:translateY(0);transition:opacity .5s ease,transform .5s ease;}
+
+  .card h2{
+    font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--sub);font-weight:600;margin:0 0 14px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .card h2::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
+
+  .kv-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:14px;
+  }
+  .kv-row:last-child{border-bottom:none;}
+  .kv-label{color:var(--sub);}
+  .kv-val{font-weight:600;font-variant-numeric:tabular-nums;}
+  .kv-val-muted{font-weight:400;font-style:italic;color:var(--sub);}
+
+  .fee-grid{display:flex;gap:12px;flex-wrap:wrap;}
+  .fee-grid + .fee-grid{margin-top:12px;}
+  .fee-item{
+    flex:1 1 130px;background:var(--gray-bg);border-radius:12px;padding:14px 16px;
+    transition:opacity .25s ease,transform .25s ease;
+  }
+  html[data-theme="dark"] .fee-item{background:#242424;}
+  .fee-item .label{font-size:12px;color:var(--sub);margin-bottom:6px;}
+  .fee-item .amount{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;}
+  .fee-item .amount .unit{font-size:12px;color:var(--sub);font-weight:500;margin-left:4px;}
+  .fee-item .amount.no-data{font-size:14px;font-weight:500;color:var(--sub);}
+  .fee-item .amount.pending{font-size:14px;font-weight:600;color:var(--amber-text);}
+  .fee-item.hidden{display:none;}
+
+  .steps{list-style:none;margin:0;padding:0;counter-reset:step;}
+  .steps li{
+    counter-increment:step;position:relative;padding:0 0 16px 32px;
+    font-size:14px;line-height:1.5;
+  }
+  .steps li:last-child{padding-bottom:0;}
+  .steps li::before{
+    content:counter(step);position:absolute;left:0;top:0;
+    width:20px;height:20px;border-radius:50%;background:var(--dark);color:#fff;
+    font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;
+  }
+  html[data-theme="dark"] .steps li::before{background:var(--accent);color:#141414;}
+  .steps li::after{
+    content:'';position:absolute;left:9px;top:22px;bottom:0;width:1px;background:var(--gray-line);
+  }
+  .steps li:last-child::after{display:none;}
+
+  .filter-row{
+    display:flex;align-items:center;gap:10px;margin:0 0 24px;flex-wrap:wrap;
+  }
+  .filter-label{font-size:12px;color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+  .pill-filter{display:flex;gap:6px;flex-wrap:wrap;}
+  .pill-filter button{
+    border:1px solid var(--gray-line);background:var(--card);color:var(--sub);
+    font-family:inherit;font-size:12px;font-weight:600;padding:6px 14px;
+    border-radius:999px;cursor:default;
+  }
+  .pill-filter button.active{background:var(--accent);color:#141414;border-color:var(--accent);}
+  .pill-filter button.toggle-pill{cursor:pointer;transition:all .2s ease;}
+  .pill-filter button.toggle-pill:not(.active){background:var(--card);color:var(--sub);border-color:var(--gray-line);}
+
+  .amber-note{
+    margin-top:14px;background:var(--amber-bg);color:var(--amber-text);
+    border-radius:10px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.5;
+  }
+
+  .packing-main{
+    font-size:14px;font-weight:600;display:flex;align-items:flex-start;gap:8px;
+  }
+  .warn-icon{flex-shrink:0;}
+  .packing-note{
+    font-size:13px;color:var(--sub);font-style:italic;margin:8px 0 0 26px;
+  }
+
+  .breadcrumb{
+    font-size:12px;color:var(--sub);margin:-4px 0 16px;line-height:1.6;
+  }
+  .breadcrumb .sep{margin:0 6px;color:var(--gray-line);}
+
+  .lock-note{font-size:12px;color:var(--sub);margin:-4px 0 14px;line-height:1.5;}
+  .code-row{display:flex;gap:8px;}
+  .code-input-wrap{position:relative;flex:1;min-width:0;display:flex;}
+  .code-input{
+    width:100%;border:1px solid var(--gray-line);background:var(--card);color:var(--text);
+    border-radius:9px;padding:9px 36px 9px 12px;font-family:inherit;font-size:13px;min-width:0;
+  }
+  .code-input:focus{outline:none;border-color:var(--dark);}
+  html[data-theme="dark"] .code-input:focus{border-color:var(--accent);}
+  .eye-btn{
+    position:absolute;right:4px;top:50%;transform:translateY(-50%);
+    border:none;background:transparent;cursor:pointer;font-size:15px;line-height:1;
+    padding:6px;color:var(--sub);user-select:none;
+  }
+  .map-link{
+    display:inline-flex;align-items:center;margin-top:10px;font-size:12px;font-weight:600;
+    color:var(--text);border:1px solid var(--gray-line);background:var(--card);
+    padding:8px 16px;border-radius:999px;text-decoration:none;transition:border-color .2s ease;
+  }
+  .map-link:hover{border-color:var(--dark);}
+  html[data-theme="dark"] .map-link:hover{border-color:var(--accent);}
+  .unlock-btn{
+    border:none;background:var(--dark);color:#fff;font-family:inherit;font-weight:600;
+    font-size:13px;padding:9px 18px;border-radius:9px;cursor:pointer;flex-shrink:0;
+  }
+  html[data-theme="dark"] .unlock-btn{background:var(--accent);color:#141414;}
+  .code-error{color:#C0392B;font-size:12px;margin-top:8px;display:none;}
+  .code-error.show{display:block;}
+  .addr-block{font-size:14px;line-height:1.7;}
+  .addr-block a{color:inherit;}
+  .addr-block.sub{font-size:13px;color:var(--sub);line-height:1.6;}
+
+  @media (max-width:420px){
+    .fee-grid{flex-direction:column;}
+    h1{font-size:19px;}
+  }
+</style>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">SASOM</div>
+    <div class="controls">
+      <div class="pill-toggle" id="langToggle">
+        <button data-set="en" class="active">EN</button>
+        <button data-set="th">TH</button>
+      </div>
+      <div class="switch" id="themeToggle">
+        <span data-en>Dark</span><span data-th>มืด</span>
+        <div class="knob-track"><div class="knob"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <h1><span data-en>Shipping</span><span data-th>ขนส่ง</span></h1>
+
+  <div class="filter-row">
+    <span class="filter-label" data-en>Country</span>
+    <span class="filter-label" data-th>ประเทศ</span>
+    <div class="pill-filter" id="countryFilter">
+      <button class="toggle-pill active" data-country="us">US</button>
+      <button class="toggle-pill" data-country="hk">HK</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Seller Setup</span><span data-th>ตั้งค่า Seller</span></h2>
+    <div class="kv-row">
+      <span class="kv-label" data-en>Payment</span>
+      <span class="kv-label" data-th>Payment</span>
+      <span class="kv-val kv-val-muted"><span data-en>Shipping Fee pending process</span><span data-th>Shipping Fee pending process</span></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Shipping Fee (per item)</span><span data-th>ค่าส่ง (รายชิ้น)</span></h2>
+    <div class="filter-row" style="margin:0 0 8px;">
+      <span class="filter-label" data-en>Group</span>
+      <span class="filter-label" data-th>Group</span>
+      <div class="pill-filter">
+        <button class="active">ART</button>
+      </div>
+    </div>
+    <div class="filter-row" style="margin:0 0 8px;">
+      <span class="filter-label" data-en>Category</span>
+      <span class="filter-label" data-th>Category</span>
+      <div class="pill-filter">
+        <button class="active">Trading Card (TCG)</button>
+      </div>
+    </div>
+
+    <div class="filter-row" style="margin:0 0 8px;">
+      <span class="filter-label" data-en>Sub Category</span>
+      <span class="filter-label" data-th>Sub Category</span>
+      <div class="pill-filter" id="subCatFilter">
+        <button class="toggle-pill active" data-filter="box-pack">Box/Pack</button>
+        <button class="toggle-pill active" data-filter="single-card">Single Card (Grading/Raw)</button>
+      </div>
+    </div>
+    <div class="filter-row" style="margin:0 0 16px;">
+      <span class="filter-label" data-en>Shipping Method</span>
+      <span class="filter-label" data-th>วิธีขนส่ง</span>
+      <div class="pill-filter" id="methodFilter">
+        <button class="toggle-pill" data-method="sea">Sea</button>
+        <button class="toggle-pill" data-method="road">Road</button>
+        <button class="toggle-pill active" data-method="air">Air</button>
+      </div>
+    </div>
+    <div class="fee-grid" id="feeGrid"></div>
+
+    <div class="amber-note">
+      <span data-en>Shipping Fee is charged separately from SASOM's Seller Fee and Payment Fee.</span>
+      <span data-th>ค่า Shipping Fee จะถูกเก็บแยกจากค่า Seller Fee และ Payment Fee ของ SASOM</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Delivery Schedule</span><span data-th>รอบการจัดส่ง</span></h2>
+    <div class="kv-row">
+      <span class="kv-label" data-en>Frequency</span>
+      <span class="kv-label" data-th>ความถี่</span>
+      <span class="kv-val"><span data-en>2x per week</span><span data-th>2 ครั้ง/สัปดาห์</span></span>
+    </div>
+    <div class="kv-row">
+      <span class="kv-label" data-en>Transit time</span>
+      <span class="kv-label" data-th>ระยะเวลา</span>
+      <span class="kv-val"><span data-en>7–10 days</span><span data-th>7-10 วัน</span></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Process</span><span data-th>ขั้นตอน</span></h2>
+    <ol class="steps">
+      <li>
+        <span data-en>Seller packs product</span>
+        <span data-th>Seller แพ็ค สินค้า</span>
+      </li>
+      <li>
+        <span data-en>Ships items to warehouse address (partner)</span>
+        <span data-th>ส่งของเข้าที่อยู่โกดัง (partner)</span>
+      </li>
+      <li>
+        <span data-en>Seller shares tracking number and Batch ID with the team for shipment tracking</span>
+        <span data-th>Seller แจ้งเลขแทรคและ Batch ID ให้ทีม เพื่อติดตามสถานะการจัดส่ง</span>
+      </li>
+      <li>
+        <span data-en>SASOM Warehouse receives the shipment</span>
+        <span data-th>โกดังสะสมได้รับสินค้า</span>
+      </li>
+      <li>
+        <span data-en>Items are inspected and go through the receiving process</span>
+        <span data-th>ตรวจเช็คสินค้า และเข้ากระบวนการรับเข้าสินค้า</span>
+      </li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Packing Criteria</span><span data-th>เกณฑ์การแพ็ค</span></h2>
+    <div class="kv-row" style="border:none;display:block;">
+      <div class="packing-main">
+        <span class="warn-icon">‼️</span>
+        <span data-en>Every item must be bubble-wrapped to prevent damage in transit</span>
+        <span data-th>ต้องห่อบับเบิ้ลทุกชิ้น เพื่อป้องกันของเสียหายระหว่างส่ง</span>
+      </div>
+      <div class="packing-note" id="packingNoteUS">
+        <span data-en>*The US warehouse does not repack.</span>
+        <span data-th>*โกดัง US ไม่มี repack</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><span data-en>Warehouse Address</span><span data-th>ที่อยู่โกดัง</span></h2>
+    <div id="addressLocked">
+      <div class="code-row">
+        <div class="code-input-wrap">
+          <input type="password" id="addressCode" class="code-input" placeholder="Enter code">
+          <button type="button" id="eyeBtn" class="eye-btn" aria-label="Hold to reveal code">👁️</button>
+        </div>
+        <button id="unlockBtn" class="unlock-btn"><span data-en>Unlock</span><span data-th>ปลดล็อก</span></button>
+      </div>
+      <div class="code-error" id="addressError"><span data-en>Incorrect code.</span><span data-th>รหัสไม่ถูกต้อง</span></div>
+    </div>
+    <div id="addressUnlocked" style="display:none;">
+      <div id="addrUS">
+        <div class="kv-row">
+          <span class="kv-label" data-en>Warehouse Name</span>
+          <span class="kv-label" data-th>Warehouse Name</span>
+          <span class="kv-val">ShopShip SSPreusa 2263183</span>
+        </div>
+        <div class="kv-row" style="display:block;border-bottom:1px solid var(--line-soft);padding:10px 0;">
+          <span class="kv-label" data-en>Address</span>
+          <span class="kv-label" data-th>ที่อยู่</span>
+          <div class="addr-block" style="margin-top:6px;">
+            Shop and Ship US<br>
+            7910 SW Nimbus Avenue, Unit V<br>
+            Beaverton, OR 97008
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=7910+SW+Nimbus+Avenue%2C+Unit+V%2C+Beaverton%2C+OR+97008" target="_blank" rel="noopener">Google Maps</a>
+        </div>
+        <div class="kv-row" style="border:none;">
+          <span class="kv-label" data-en>Tel</span>
+          <span class="kv-label" data-th>โทร</span>
+          <span class="kv-val"><a href="tel:5039465666">(503) 946-5666</a></span>
+        </div>
+      </div>
+      <div id="addrHK" class="hidden">
+        <div class="kv-row">
+          <span class="kv-label" data-en>Warehouse Name</span>
+          <span class="kv-label" data-th>Warehouse Name</span>
+          <span class="kv-val">Mr. Wang (WK1168)</span>
+        </div>
+        <div class="kv-row" style="display:block;border-bottom:1px solid var(--line-soft);padding:10px 0;">
+          <span class="kv-label" data-en>Address</span>
+          <span class="kv-label" data-th>ที่อยู่</span>
+          <div class="addr-block" style="margin-top:6px;">
+            15B, Tower 2, Aquila Square Mile<br>
+            38 Fuk Chak Street, Tai Kok Tsui<br>
+            Kowloon, Hong Kong
+          </div>
+          <div class="addr-block sub" style="margin-top:6px;">
+            王先生（WK1168）<br>
+            香港九龙福泽街38号,利奥坊 曦岸,2座15楼B室
+          </div>
+          <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=15B%2C+Tower+2%2C+Aquila+Square+Mile%2C+38+Fuk+Chak+Street%2C+Tai+Kok+Tsui%2C+Kowloon%2C+Hong+Kong" target="_blank" rel="noopener">Google Maps</a>
+        </div>
+        <div class="kv-row" style="border:none;">
+          <span class="kv-label" data-en>Tel</span>
+          <span class="kv-label" data-th>โทร</span>
+          <span class="kv-val"><a href="tel:+85264641696">+852 6464 1696</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const html = document.documentElement;
+  const langToggle = document.getElementById('langToggle');
+  langToggle.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    html.setAttribute('data-lang', btn.dataset.set);
+    langToggle.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
+  });
+
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', ()=>{
+    const cur = html.getAttribute('data-theme');
+    html.setAttribute('data-theme', cur==='dark' ? 'light' : 'dark');
+  });
+
+  const FEE_DATA = {
+    us: {
+      'box-pack': { sea: null, road: null, air: 830 },
+      'single-card': { sea: null, road: null, air: 300 }
+    },
+    hk: {
+      'box-pack': {
+        sea: { box: 390, pack: 80 },
+        road: { box: 490, pack: 100 },
+        air: { box: 800, pack: 260 }
+      },
+      'single-card': { sea: 'pending', road: 'pending', air: 'pending' }
+    }
+  };
+
+  let activeCountry = 'us';
+  let activeMethod = 'air';
+  const activeSubCats = new Set(['box-pack', 'single-card']);
+
+  function feeItemHTML(label, value){
+    let amountHtml;
+    if(value === null || value === undefined){
+      amountHtml = '<div class="amount no-data">No data</div>';
+    } else if(value === 'pending'){
+      amountHtml = '<div class="amount pending">Pending</div>';
+    } else {
+      amountHtml = `<div class="amount">${value}<span class="unit">฿</span></div>`;
+    }
+    return `<div class="fee-item"><div class="label">${label}</div>${amountHtml}</div>`;
+  }
+
+  function renderFees(){
+    const grid = document.getElementById('feeGrid');
+    let out = '';
+    activeSubCats.forEach(key=>{
+      const data = FEE_DATA[activeCountry][key][activeMethod];
+      if(key === 'box-pack' && data && typeof data === 'object'){
+        out += feeItemHTML('Box', data.box);
+        out += feeItemHTML('Pack', data.pack);
+      } else {
+        const label = key === 'box-pack' ? 'Box / Pack' : 'Single Card (Grading/Raw)';
+        out += feeItemHTML(label, data);
       }
-      html[data-theme="dark"]{
-            --bg:#141414;
-            --card:#1E1E1E;
-            --line-soft:#2A2A2A;
-            --gray-line:#2E2E2E;
-            --text:#F2F2F2;
-            --sub:#9A9A9A;
-            --amber-bg:#2E2810;
-            --amber-text:#E8C84A;
+    });
+    grid.innerHTML = out || '<div class="fee-item"><div class="label">—</div><div class="amount no-data">No data</div></div>';
+  }
+
+  const subCatFilter = document.getElementById('subCatFilter');
+  subCatFilter.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button.toggle-pill');
+    if(!btn) return;
+    btn.classList.toggle('active');
+    const key = btn.dataset.filter;
+    if(btn.classList.contains('active')) activeSubCats.add(key);
+    else activeSubCats.delete(key);
+    renderFees();
+  });
+
+  const methodFilter = document.getElementById('methodFilter');
+  methodFilter.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    methodFilter.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
+    activeMethod = btn.dataset.method;
+    renderFees();
+  });
+
+  const addrUS = document.getElementById('addrUS');
+  const addrHK = document.getElementById('addrHK');
+  const packingNoteUS = document.getElementById('packingNoteUS');
+  const countryFilter = document.getElementById('countryFilter');
+  countryFilter.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    countryFilter.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
+    activeCountry = btn.dataset.country;
+    html.setAttribute('data-country', activeCountry);
+    const isUS = activeCountry === 'us';
+    addrUS.classList.toggle('hidden', !isUS);
+    addrHK.classList.toggle('hidden', isUS);
+    packingNoteUS.classList.toggle('hidden', !isUS);
+    renderFees();
+  });
+
+  renderFees();
+
+  const ADDRESS_CODE = 'SASOM';
+  const addressCode = document.getElementById('addressCode');
+  const addressLocked = document.getElementById('addressLocked');
+  const addressUnlocked = document.getElementById('addressUnlocked');
+  const addressError = document.getElementById('addressError');
+  const unlockBtn = document.getElementById('unlockBtn');
+  function tryUnlock(){
+    if(addressCode.value.trim().toUpperCase() === ADDRESS_CODE){
+      addressLocked.style.display = 'none';
+      addressUnlocked.style.display = 'block';
+    } else {
+      addressError.classList.add('show');
+    }
+  }
+  unlockBtn.addEventListener('click', tryUnlock);
+  addressCode.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') tryUnlock(); });
+  addressCode.addEventListener('input', ()=> addressError.classList.remove('show'));
+
+  const eyeBtn = document.getElementById('eyeBtn');
+  const showCode = ()=> addressCode.type = 'text';
+  const hideCode = ()=> addressCode.type = 'password';
+  eyeBtn.addEventListener('mousedown', showCode);
+  eyeBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); showCode(); });
+  ['mouseup','mouseleave','touchend','touchcancel'].forEach(evt => eyeBtn.addEventListener(evt, hideCode));
+
+  const cards = document.querySelectorAll('.card');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
       }
-      *{box-sizing:border-box;}
-      body{
-            margin:0;
-            background:var(--bg);
-            color:var(--text);
-            font-family:'Inter','Noto Sans Thai',sans-serif;
-            font-weight:400;
-            -webkit-font-smoothing:antialiased;
-            transition:background .25s ease,color .25s ease;
-      }
-      [data-th]{display:none;}
-      html[data-lang="th"] [data-en]{display:none;}
-      html[data-lang="th"] [data-th]{display:inline;}
-      .hidden{display:none!important;}
+    });
+  }, {threshold:0.1});
+  cards.forEach(c=>io.observe(c));
+</script>
 
-      .wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px;}
-
-      .topbar{
-            display:flex;justify-content:space-between;align-items:center;
-            padding:6px 0 20px;
-      }
-      .brand{font-weight:600;font-size:14px;letter-spacing:.02em;color:var(--sub);}
-      .controls{display:flex;gap:8px;align-items:center;}
-
-      .pill-toggle{
-            display:flex;background:var(--card);border:1px solid var(--gray-line);
-            border-radius:999px;padding:3px;gap:2px;
-      }
-      .pill-toggle button{
-            border:none;background:transparent;font-family:inherit;font-size:12px;
-            font-weight:600;padding:6px 12px;border-radius:999px;cursor:pointer;
-            color:var(--sub);transition:all .2s ease;
-      }
-      .pill-toggle button.active{background:var(--accent);color:#141414;}
-
-      .switch{
-            display:flex;align-items:center;gap:10px;background:transparent;
-            padding:8px 4px;
-            cursor:pointer;user-select:none;
-      }
-      .switch span{font-size:13px;font-weight:500;color:var(--text);}
-      .knob-track{
-            width:40px;height:24px;border-radius:999px;background:var(--gray-line);
-            position:relative;transition:background .3s cubic-bezier(.4,0,.2,1);
-            flex-shrink:0;
-      }
-      .knob{
-            position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;
-            background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,.25);
-            transition:transform .3s cubic-bezier(.4,0,.2,1);
-      }
-      html[data-theme="dark"] .knob-track{background:var(--dark);}
-      html[data-theme="dark"] .knob{transform:translateX(16px);}
-
-      h1{font-size:22px;font-weight:600;margin:0 0 20px;}
-      .subline{color:var(--sub);font-size:13px;margin:0 0 24px;}
-
-      .card{
-            background:var(--card);border:1px solid var(--gray-line);
-            border-radius:16px;padding:20px;margin-bottom:16px;
-            opacity:0;transform:translateY(14px);
-      }
-      .card.in{opacity:1;transform:translateY(0);transition:opacity .5s ease,transform .5s ease;}
-
-      .card h2{
-            font-size:11px;text-transform:uppercase;letter-spacing:.06em;
-            color:var(--sub);font-weight:600;margin:0 0 14px;
-            display:flex;align-items:center;gap:8px;
-      }
-      .card h2::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
-
-      .kv-row{
-            display:flex;justify-content:space-between;align-items:center;
-            padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:14px;
-      }
-      .kv-row:last-child{border-bottom:none;}
-      .kv-label{color:var(--sub);}
-      .kv-val{font-weight:600;font-variant-numeric:tabular-nums;}
-      .kv-val-muted{font-weight:400;font-style:italic;color:var(--sub);}
-
-      .fee-grid{display:flex;gap:12px;flex-wrap:wrap;}
-      .fee-grid + .fee-grid{margin-top:12px;}
-      .fee-item{
-            flex:1 1 130px;background:var(--gray-bg);border-radius:12px;padding:14px 16px;
-            transition:opacity .25s ease,transform .25s ease;
-      }
-      html[data-theme="dark"] .fee-item{background:#242424;}
-      .fee-item .label{font-size:12px;color:var(--sub);margin-bottom:6px;}
-      .fee-item .amount{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums;}
-      .fee-item .amount .unit{font-size:12px;color:var(--sub);font-weight:500;margin-left:4px;}
-      .fee-item .amount.no-data{font-size:14px;font-weight:500;color:var(--sub);}
-      .fee-item .amount.pending{font-size:14px;font-weight:600;color:var(--amber-text);}
-      .fee-item.hidden{display:none;}
-
-      .steps{list-style:none;margin:0;padding:0;counter-reset:step;}
-      .steps li{
-            counter-increment:step;position:relative;padding:0 0 16px 32px;
-            font-size:14px;line-height:1.5;
-      }
-      .steps li:last-child{padding-bottom:0;}
-      .steps li::before{
-            content:counter(step);position:absolute;left:0;top:0;
-            width:20px;height:20px;border-radius:50%;background:var(--dark);color:#fff;
-            font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;
-      }
-      html[data-theme="dark"] .steps li::before{background:var(--accent);color:#141414;}
-      .steps li::after{
-            content:'';position:absolute;left:9px;top:22px;bottom:0;width:1px;background:var(--gray-line);
-      }
-      .steps li:last-child::after{display:none;}
-
-      .filter-row{
-            display:flex;align-items:center;gap:10px;margin:0 0 24px;flex-wrap:wrap;
-      }
-      .filter-label{font-size:12px;color:var(--sub);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
-      .pill-filter{display:flex;gap:6px;flex-wrap:wrap;}
-      .pill-filter button{
-            border:1px solid var(--gray-line);background:var(--card);color:var(--sub);
-            font-family:inherit;font-size:12px;font-weight:600;padding:6px 14px;
-            border-radius:999px;cursor:default;
-      }
-      .pill-filter button.active{background:var(--accent);color:#141414;border-color:var(--accent);}
-      .pill-filter button.toggle-pill{cursor:pointer;transition:all .2s ease;}
-      .pill-filter button.toggle-pill:not(.active){background:var(--card);color:var(--sub);border-color:var(--gray-line);}
-
-      .amber-note{
-            margin-top:14px;background:var(--amber-bg);color:var(--amber-text);
-            border-radius:10px;padding:10px 14px;font-size:12px;font-weight:500;line-height:1.5;
-      }
-
-      .packing-main{
-            font-size:14px;font-weight:600;display:flex;align-items:flex-start;gap:8px;
-      }
-      .warn-icon{flex-shrink:0;}
-      .packing-note{
-            font-size:13px;color:var(--sub);font-style:italic;margin:8px 0 0 26px;
-      }
-
-      .breadcrumb{
-            font-size:12px;color:var(--sub);margin:-4px 0 16px;line-height:1.6;
-      }
-      .breadcrumb .sep{margin:0 6px;color:var(--gray-line);}
-
-      .lock-note{font-size:12px;color:var(--sub);margin:-4px 0 14px;line-height:1.5;}
-      .code-row{display:flex;gap:8px;}
-      .code-input-wrap{position:relative;flex:1;min-width:0;display:flex;}
-      .code-input{
-            width:100%;border:1px solid var(--gray-line);background:var(--card);color:var(--text);
-            border-radius:9px;padding:9px 36px 9px 12px;font-family:inherit;font-size:13px;min-width:0;
-      }
-      .code-input:focus{outline:none;border-color:var(--dark);}
-      html[data-theme="dark"] .code-input:focus{border-color:var(--accent);}
-      .eye-btn{
-            position:absolute;right:4px;top:50%;transform:translateY(-50%);
-            border:none;background:transparent;cursor:pointer;font-size:15px;line-height:1;
-            padding:6px;color:var(--sub);user-select:none;
-      }
-      .map-link{
-            display:inline-flex;align-items:center;margin-top:10px;font-size:12px;font-weight:600;
-            color:var(--text);border:1px solid var(--gray-line);background:var(--card);
-            padding:8px 16px;border-radius:999px;text-decoration:none;transition:border-color .2s ease;
-      }
-      .map-link:hover{border-color:var(--dark);}
-      html[data-theme="dark"] .map-link:hover{border-color:var(--accent);}
-      .unlock-btn{
-            border:none;background:var(--dark);color:#fff;font-family:inherit;font-weight:600;
-            font-size:13px;padding:9px 18px;border-radius:9px;cursor:pointer;flex-shrink:0;
-      }
-      html[data-theme="dark"] .unlock-btn{background:var(--accent);color:#141414;}
-      .code-error{color:#C0392B;font-size:12px;margin-top:8px;display:none;}
-      .code-error.show{display:block;}
-      .addr-block{font-size:14px;line-height:1.7;}
-      .addr-block a{color:inherit;}
-      .addr-block.sub{font-size:13px;color:var(--sub);line-height:1.6;}
-
-      @media (max-width:420px){
-            .fee-grid{flex-direction:column;}
-            h1{font-size:19px;}
-      }
-    </style>
-    <div class="wrap">
-
-        <div class="topbar">
-              <div class="brand">SASOM</div>div>
-              <div class="controls">
-                      <div class="pill-toggle" id="langToggle">
-                                <button data-set="en" class="active">EN</button>button>
-                                <button data-set="th">TH</button>button>
-                      </div>div>
-                      <div class="switch" id="themeToggle">
-                                <span data-en>Dark</span>span><span data-th>มืด</span>span>
-                                <div class="knob-track"><div class="knob"></div>div></div>div>
-                      </div>div>
-              </div>div>
-        </div>div>
-
-        <h1><span data-en>Shipping</span>span><span data-th>ขนส่ง</span>span></h1>
-    
-      <div class="filter-row">
-          <span class="filter-label" data-en>Country</span>span>
-          <span class="filter-label" data-th>ประเทศ</span>span>
-          <div class="pill-filter" id="countryFilter">
-                <button class="toggle-pill active" data-country="us">US</button>button>
-                <button class="toggle-pill" data-country="hk">HK</button>button>
-          </div>div>
-      </div>div>
-    
-      <div class="card">
-          <h2><span data-en>Seller Setup</span>span><span data-th>ตั้งค่า Seller</span>span></h2>
-          <div class="kv-row">
-                <span class="kv-label" data-en>Payment</span>span>
-                <span class="kv-label" data-th>Payment</span>span>
-                <span class="kv-val kv-val-muted"><span data-en>Shipping Fee pending process</span>span><span data-th>Shipping Fee pending process</span>span></span>span>
-          </div>div>
-      </div>div>
-    
-      <div class="card">
-          <h2><span data-en>Shipping Fee (per item)</span>span><span data-th>ค่าส่ง (รายชิ้น)</span>span></h2>
-          <div class="filter-row" style="margin:0 0 8px;">
-                <span class="filter-label" data-en>Group</span>span>
-                <span class="filter-label" data-th>Group</span>span>
-                <div class="pill-filter">
-                        <button class="active">ART</button>button>
-                </div>div>
-          </div>div>
-          <div class="filter-row" style="margin:0 0 8px;">
-                <span class="filter-label" data-en>Category</span>span>
-                <span class="filter-label" data-th>Category</span>span>
-                <div class="pill-filter">
-                        <button class="active">Trading Card (TCG)</button>button>
-                </div>div>
-          </div>div>
-      
-          <div class="filter-row" style="margin:0 0 8px;">
-                <span class="filter-label" data-en>Sub Category</span>span>
-                <span class="filter-label" data-th>Sub Category</span>span>
-                <div class="pill-filter" id="subCatFilter">
-                        <button class="toggle-pill active" data-filter="box-pack">Box/Pack</button>button>
-                        <button class="toggle-pill active" data-filter="single-card">Single Card (Grading/Raw)</button>button>
-                </div>div>
-          </div>div>
-          <div class="filter-row" style="margin:0 0 16px;">
-                <span class="filter-label" data-en>Shipping Method</span>span>
-                <span class="filter-label" data-th>วิธีขนส่ง</span>span>
-                <div class="pill-filter" id="methodFilter">
-                        <button class="toggle-pill" data-method="sea">Sea</button>button>
-                        <button class="toggle-pill" data-method="road">Road</button>button>
-                        <button class="toggle-pill active" data-method="air">Air</button>button>
-                </div>div>
-          </div>div>
-          <div class="fee-grid" id="feeGrid"></div>div>
-      
-          <div class="amber-note">
-                <span data-en>Shipping Fee is charged separately from SASOM's Seller Fee and Payment Fee.</span>span>
-                <span data-th>ค่า Shipping Fee จะถูกเก็บแยกจากค่า Seller Fee และ Payment Fee ของ SASOM</span>span>
-          </div>div>
-      </div>div>
-    
-      <div class="card">
-          <h2><span data-en>Delivery Schedule</span>span><span data-th>รอบการจัดส่ง</span>span></h2>
-          <div class="kv-row">
-                <span class="kv-label" data-en>Frequency</span>span>
-                <span class="kv-label" data-th>ความถี่</span>span>
-                <span class="kv-val"><span data-en>2x per week</span>span><span data-th>2 ครั้ง/สัปดาห์</span>span></span>span>
-          </div>div>
-          <div class="kv-row">
-                <span class="kv-label" data-en>Transit time</span>span>
-                <span class="kv-label" data-th>ระยะเวลา</span>span>
-                <span class="kv-val"><span data-en>7–10 days</span>span><span data-th>7-10 วัน</span>span></span>span>
-          </div>div>
-      </div>div>
-    
-      <div class="card">
-          <h2><span data-en>Process</span>span><span data-th>ขั้นตอน</span>span></h2>
-          <ol class="steps">
-                <li>
-                          <span data-en>Seller packs product</span>span>
-                          <span data-th>Seller แพ็ค สินค้า</span>span>
-                </li>
-                  <li>
-                            <span data-en>Ships items to warehouse address (partner)</span>span>
-                            <span data-th>ส่งของเข้าที่อยู่โกดัง (partner)</span>span>
-                  </li>
-                  <li>
-                            <span data-en>Seller shares tracking number and Batch ID with the team for shipment tracking</span>span>
-                            <span data-th>Seller แจ้งเลขแทรคและ Batch ID ให้ทีม เพื่อติดตามสถานะการจัดส่ง</span>span>
-                  </li>
-                  <li>
-                            <span data-en>SASOM Warehouse receives the shipment</span>span>
-                            <span data-th>โกดังสะสมได้รับสินค้า</span>span>
-                  </li>
-                  <li>
-                            <span data-en>Items are inspected and go through the receiving process</span>span>
-                            <span data-th>ตรวจเช็คสินค้า และเข้ากระบวนการรับเข้าสินค้า</span>span>
-                  </li>
-          </ol>ol>
-      </div>div>
-
-        <div class="card">
-              <h2><span data-en>Packing Criteria</span>span><span data-th>เกณฑ์การแพ็ค</span>span></h2>
-              <div class="kv-row" style="border:none;display:block;">
-                      <div class="packing-main">
-                                <span class="warn-icon">‼️</span>span>
-                                <span data-en>Every item must be bubble-wrapped to prevent damage in transit</span>span>
-                                <span data-th>ต้องห่อบับเบิ้ลทุกชิ้น เพื่อป้องกันของเสียหายระหว่างส่ง</span>span>
-                      </div>div>
-                      <div class="packing-note" id="packingNoteUS">
-                                <span data-en>*The US warehouse does not repack.</span>span>
-                                <span data-th>*โกดัง US ไม่มี repack</span>span>
-                      </div>div>
-              </div>div>
-        </div>div>
-
-        <div class="card">
-              <h2><span data-en>Warehouse Address</span>span><span data-th>ที่อยู่โกดัง</span>span></h2>
-              <div id="addressLocked">
-                      <div class="code-row">
-                                <div class="code-input-wrap">
-                                            <input type="password" id="addressCode" class="code-input" placeholder="Enter code">
-                                            <button type="button" id="eyeBtn" class="eye-btn" aria-label="Hold to reveal code">👁️</button>button>
-                                </div>div>
-                                <button id="unlockBtn" class="unlock-btn"><span data-en>Unlock</span>span><span data-th>ปลดล็อก</span>span></button>button>
-                      </div>div>
-                      <div class="code-error" id="addressError"><span data-en>Incorrect code.</span>span><span data-th>รหัสไม่ถูกต้อง</span>span></div>div>
-              </div>div>
-              <div id="addressUnlocked" style="display:none;">
-                      <div id="addrUS">
-                                <div class="kv-row">
-                                            <span class="kv-label" data-en>Warehouse Name</span>span>
-                                            <span class="kv-label" data-th>Warehouse Name</span>span>
-                                            <span class="kv-val">ShopShip SSPreusa 2263183</span>span>
-                                </div>div>
-                                <div class="kv-row" style="display:block;border-bottom:1px solid var(--line-soft);padding:10px 0;">
-                                            <span class="kv-label" data-en>Address</span>span>
-                                            <span class="kv-label" data-th>ที่อยู่</span>span>
-                                            <div class="addr-block" style="margin-top:6px;">
-                                                          Shop and Ship US<br>
-                                                          7910 SW Nimbus Avenue, Unit V<br>
-                                                          Beaverton, OR 97008
-                                            </div>div>
-                                            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=7910+SW+Nimbus+Avenue%2C+Unit+V%2C+Beaverton%2C+OR+97008" target="_blank" rel="noopener">Google Maps</a>a>
-                                </div>div>
-                                <div class="kv-row" style="border:none;">
-                                            <span class="kv-label" data-en>Tel</span>span>
-                                            <span class="kv-label" data-th>โทร</span>span>
-                                            <span class="kv-val"><a href="tel:5039465666">(503) 946-5666</a>a></span>span>
-                                </div>div>
-                      </div>div>
-                      <div id="addrHK" class="hidden">
-                                <div class="kv-row">
-                                            <span class="kv-label" data-en>Warehouse Name</span>span>
-                                            <span class="kv-label" data-th>Warehouse Name</span>span>
-                                            <span class="kv-val">Mr. Wang (WK1168)</span>span>
-                                </div>div>
-                                <div class="kv-row" style="display:block;border-bottom:1px solid var(--line-soft);padding:10px 0;">
-                                            <span class="kv-label" data-en>Address</span>span>
-                                            <span class="kv-label" data-th>ที่อยู่</span>span>
-                                            <div class="addr-block" style="margin-top:6px;">
-                                                          15B, Tower 2, Aquila Square Mile<br>
-                                                          38 Fuk Chak Street, Tai Kok Tsui<br>
-                                                          Kowloon, Hong Kong
-                                            </div>div>
-                                            <div class="addr-block sub" style="margin-top:6px;">
-                                                          王先生（WK1168）<br>
-                                                          香港九龙福泽街38号,利奥坊 曦岸,2座15楼B室
-                                            </div>div>
-                                            <a class="map-link" href="https://www.google.com/maps/search/?api=1&query=15B%2C+Tower+2%2C+Aquila+Square+Mile%2C+38+Fuk+Chak+Street%2C+Tai+Kok+Tsui%2C+Kowloon%2C+Hong+Kong" target="_blank" rel="noopener">Google Maps</a>a>
-                                </div>div>
-                                <div class="kv-row" style="border:none;">
-                                            <span class="kv-label" data-en>Tel</span>span>
-                                            <span class="kv-label" data-th>โทร</span>span>
-                                            <span class="kv-val"><a href="tel:+85264641696">+852 6464 1696</a>a></span>span>
-                                </div>div>
-                      </div>div>
-              </div>div>
-        </div>div>
-
-    </div>div>
-
-    <script>
-        const html = document.documentElement;
-        const langToggle = document.getElementById('langToggle');
-        langToggle.addEventListener('click', (e)=>{
-              const btn = e.target.closest('button');
-              if(!btn) return;
-              html.setAttribute('data-lang', btn.dataset.set);
-              langToggle.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
-        });
-
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', ()=>{
-              const cur = html.getAttribute('data-theme');
-              html.setAttribute('data-theme', cur==='dark' ? 'light' : 'dark');
-        });
-
-        const FEE_DATA = {
-              us: {
-                      'box-pack': { sea: null, road: null, air: 830 },
-                      'single-card': { sea: null, road: null, air: 300 }
-              },
-              hk: {
-                      'box-pack': {
-                                sea: { box: 390, pack: 80 },
-                                road: { box: 490, pack: 100 },
-                                air: { box: 800, pack: 260 }
-                      },
-                      'single-card': { sea: 'pending', road: 'pending', air: 'pending' }
-              }
-        };
-
-        let activeCountry = 'us';
-        let activeMethod = 'air';
-        const activeSubCats = new Set(['box-pack', 'single-card']);
-
-        function feeItemHTML(label, value){
-              let amountHtml;
-              if(value === null || value === undefined){
-                      amountHtml = '<div class="amount no-data">No data</div>';
-              } else if(value === 'pending'){
-                      amountHtml = '<div class="amount pending">Pending</div>';
-              } else {
-                      amountHtml = `<div class="amount">${value}<span class="unit">฿</span></div>`;
-              }
-              return `<div class="fee-item"><div class="label">${label}</div>${amountHtml}</div>`;
-        }
-
-        function renderFees(){
-              const grid = document.getElementById('feeGrid');
-              let out = '';
-              activeSubCats.forEach(key=>{
-                      const data = FEE_DATA[activeCountry][key][activeMethod];
-                      if(key === 'box-pack' && data && typeof data === 'object'){
-                                out += feeItemHTML('Box', data.box);
-                                out += feeItemHTML('Pack', data.pack);
-                      } else {
-                                const label = key === 'box-pack' ? 'Box / Pack' : 'Single Card (Grading/Raw)';
-                                out += feeItemHTML(label, data);
-                      }
-              });
-              grid.innerHTML = out || '<div class="fee-item"><div class="label">—</div><div class="amount no-data">No data</div></div>';
-        }
-
-        const subCatFilter = document.getElementById('subCatFilter');
-        subCatFilter.addEventListener('click', (e)=>{
-              const btn = e.target.closest('button.toggle-pill');
-              if(!btn) return;
-              btn.classList.toggle('active');
-              const key = btn.dataset.filter;
-              if(btn.classList.contains('active')) activeSubCats.add(key);
-              else activeSubCats.delete(key);
-              renderFees();
-        });
-
-        const methodFilter = document.getElementById('methodFilter');
-        methodFilter.addEventListener('click', (e)=>{
-              const btn = e.target.closest('button');
-              if(!btn) return;
-              methodFilter.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
-              activeMethod = btn.dataset.method;
-              renderFees();
-        });
-
-        const addrUS = document.getElementById('addrUS');
-        const addrHK = document.getElementById('addrHK');
-        const packingNoteUS = document.getElementById('packingNoteUS');
-        const countryFilter = document.getElementById('countryFilter');
-        countryFilter.addEventListener('click', (e)=>{
-              const btn = e.target.closest('button');
-              if(!btn) return;
-              countryFilter.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
-              activeCountry = btn.dataset.country;
-              html.setAttribute('data-country', activeCountry);
-              const isUS = activeCountry === 'us';
-              addrUS.classList.toggle('hidden', !isUS);
-              addrHK.classList.toggle('hidden', isUS);
-              packingNoteUS.classList.toggle('hidden', !isUS);
-              renderFees();
-        });
-
-        renderFees();
-
-        const ADDRESS_CODE = 'SASOM';
-        const addressCode = document.getElementById('addressCode');
-        const addressLocked = document.getElementById('addressLocked');
-        const addressUnlocked = document.getElementById('addressUnlocked');
-        const addressError = document.getElementById('addressError');
-        const unlockBtn = document.getElementById('unlockBtn');
-        function tryUnlock(){
-              if(addressCode.value.trim().toUpperCase() === ADDRESS_CODE){
-                      addressLocked.style.display = 'none';
-                      addressUnlocked.style.display = 'block';
-              } else {
-                      addressError.classList.add('show');
-              }
-        }
-        unlockBtn.addEventListener('click', tryUnlock);
-        addressCode.addEventListener('keydown', (e)=>{ if(e.key === 'Enter') tryUnlock(); });
-        addressCode.addEventListener('input', ()=> addressError.classList.remove('show'));
-
-        const eyeBtn = document.getElementById('eyeBtn');
-        const showCode = ()=> addressCode.type = 'text';
-        const hideCode = ()=> addressCode.type = 'password';
-        eyeBtn.addEventListener('mousedown', showCode);
-        eyeBtn.addEventListener('touchstart', (e)=>{ e.preventDefault(); showCode(); });
-        ['mouseup','mouseleave','touchend','touchcancel'].forEach(evt => eyeBtn.addEventListener(evt, hideCode));
-
-        const cards = document.querySelectorAll('.card');
-        const io = new IntersectionObserver((entries)=>{
-              entries.forEach(entry=>{
-                      if(entry.isIntersecting){
-                                entry.target.classList.add('in');
-                                io.unobserve(entry.target);
-                      }
-              });
-        }, {threshold:0.1});
-        cards.forEach(c=>io.observe(c));
-    </script>
-
-  </body>
+</body>
 </html>
