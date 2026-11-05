@@ -296,12 +296,12 @@
     <div class="kv-row">
       <span class="kv-label" data-en>Frequency</span>
       <span class="kv-label" data-th>ความถี่</span>
-      <span class="kv-val"><span data-en>2x per week</span><span data-th>2 ครั้ง/สัปดาห์</span></span>
+      <span class="kv-val" id="freqVal"></span>
     </div>
     <div class="kv-row">
       <span class="kv-label" data-en>Transit time</span>
       <span class="kv-label" data-th>ระยะเวลา</span>
-      <span class="kv-val"><span data-en>7–10 days</span><span data-th>7-10 วัน</span></span>
+      <span class="kv-val" id="transitVal"></span>
     </div>
   </div>
 
@@ -457,6 +457,21 @@
     }
   };
 
+  const SCHEDULE_DATA = {
+    us: {
+      freq: { en: '2x per week', th: '2 ครั้ง/สัปดาห์' },
+      transit: { en: '7–10 days', th: '7-10 วัน' }
+    },
+    hk: {
+      freq: { en: '1x per week', th: '1 ครั้ง/สัปดาห์' },
+      transit: {
+        sea: { en: '20–25 days', th: '20-25 วัน' },
+        road: { en: '7–15 days', th: '7-15 วัน' },
+        air: { en: '3–7 days', th: '3-7 วัน' }
+      }
+    }
+  };
+
   let activeCountry = 'us';
   let activeMethod = 'air';
   const activeSubCats = new Set(['box-pack', 'single-card']);
@@ -489,6 +504,15 @@
     grid.innerHTML = out || '<div class="fee-item"><div class="label">—</div><div class="amount no-data">No data</div></div>';
   }
 
+  function renderSchedule(){
+    const data = SCHEDULE_DATA[activeCountry];
+    const freqEl = document.getElementById('freqVal');
+    const transitEl = document.getElementById('transitVal');
+    freqEl.innerHTML = `<span data-en>${data.freq.en}</span><span data-th>${data.freq.th}</span>`;
+    const transit = data.transit.en ? data.transit : (data.transit[activeMethod] || data.transit.air);
+    transitEl.innerHTML = `<span data-en>${transit.en}</span><span data-th>${transit.th}</span>`;
+  }
+
   const subCatFilter = document.getElementById('subCatFilter');
   subCatFilter.addEventListener('click', (e)=>{
     const btn = e.target.closest('button.toggle-pill');
@@ -507,6 +531,7 @@
     methodFilter.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
     activeMethod = btn.dataset.method;
     renderFees();
+    renderSchedule();
   });
 
   const addrUS = document.getElementById('addrUS');
@@ -524,6 +549,7 @@
     addrHK.classList.toggle('hidden', isUS);
     packingNoteUS.classList.toggle('hidden', !isUS);
     renderFees();
+    renderSchedule();
   }
 
   function selectCountry(country, pushUrl){
@@ -548,6 +574,7 @@
   });
 
   renderFees();
+  renderSchedule();
 
   // a direct /us or /hk link shows only that country's data, with the other
   // option hidden — the base URL (no suffix) keeps the full US/HK toggle
