@@ -513,6 +513,7 @@
   const addrHK = document.getElementById('addrHK');
   const packingNoteUS = document.getElementById('packingNoteUS');
   const countryFilter = document.getElementById('countryFilter');
+  let countryLocked = false;
 
   function applyCountry(country){
     countryFilter.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.country===country));
@@ -525,8 +526,6 @@
     renderFees();
   }
 
-  // country toggle stays fully usable regardless of which URL was used to land here —
-  // it only changes the starting view, never restricts which country can be viewed
   function selectCountry(country, pushUrl){
     applyCountry(country);
     if(pushUrl){
@@ -536,24 +535,32 @@
   }
 
   countryFilter.addEventListener('click', (e)=>{
+    if(countryLocked) return;
     const btn = e.target.closest('button');
     if(!btn) return;
     selectCountry(btn.dataset.country, true);
   });
 
   window.addEventListener('popstate', ()=>{
+    if(countryLocked) return;
     const seg = window.location.pathname.split('/').filter(Boolean).pop();
     applyCountry(seg === 'hk' ? 'hk' : 'us');
   });
 
   renderFees();
 
-  // initial load: pre-select a country from the URL path, if present, without
-  // restricting the filter — the toggle above always stays clickable
+  // a direct /us or /hk link shows only that country's data, with the other
+  // option hidden — the base URL (no suffix) keeps the full US/HK toggle
   (function initCountryFromPath(){
     const seg = window.location.pathname.split('/').filter(Boolean).pop();
-    if(seg === 'hk') applyCountry('hk');
-    else if(seg === 'us') applyCountry('us');
+    if(seg === 'hk' || seg === 'us'){
+      applyCountry(seg);
+      countryLocked = true;
+      countryFilter.querySelectorAll('button').forEach(b=>{
+        if(b.dataset.country !== seg) b.style.display = 'none';
+        else b.classList.remove('toggle-pill');
+      });
+    }
   })();
 
   const ADDRESS_CODE = 'SASOM';
