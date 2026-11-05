@@ -413,6 +413,20 @@
 </div>
 
 <script>
+  // Restore pretty URL after a GitHub Pages 404-redirect (SPA deep-link support)
+  (function(l) {
+    if (l.search[1] === 'p') {
+      var decoded = l.search.slice(1).split('&').filter(function(s) {
+        return s.slice(0,2) === 'p=';
+      })[0];
+      if (decoded) {
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + decoded.slice(2).replace(/~and~/g, '&') + l.hash
+        );
+      }
+    }
+  }(window.location));
+
   const html = document.documentElement;
   const langToggle = document.getElementById('langToggle');
   langToggle.addEventListener('click', (e)=>{
@@ -499,20 +513,48 @@
   const addrHK = document.getElementById('addrHK');
   const packingNoteUS = document.getElementById('packingNoteUS');
   const countryFilter = document.getElementById('countryFilter');
-  countryFilter.addEventListener('click', (e)=>{
-    const btn = e.target.closest('button');
-    if(!btn) return;
-    countryFilter.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
-    activeCountry = btn.dataset.country;
+
+  function applyCountry(country){
+    countryFilter.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.country===country));
+    activeCountry = country;
     html.setAttribute('data-country', activeCountry);
     const isUS = activeCountry === 'us';
     addrUS.classList.toggle('hidden', !isUS);
     addrHK.classList.toggle('hidden', isUS);
     packingNoteUS.classList.toggle('hidden', !isUS);
     renderFees();
+  }
+
+  // country toggle stays fully usable regardless of which URL was used to land here —
+  // it only changes the starting view, never restricts which country can be viewed
+  function selectCountry(country, pushUrl){
+    applyCountry(country);
+    if(pushUrl){
+      const base = window.location.pathname.replace(/\/(us|hk)\/?$/, '').replace(/\/$/, '');
+      history.pushState({country}, '', base + '/' + country);
+    }
+  }
+
+  countryFilter.addEventListener('click', (e)=>{
+    const btn = e.target.closest('button');
+    if(!btn) return;
+    selectCountry(btn.dataset.country, true);
+  });
+
+  window.addEventListener('popstate', ()=>{
+    const seg = window.location.pathname.split('/').filter(Boolean).pop();
+    applyCountry(seg === 'hk' ? 'hk' : 'us');
   });
 
   renderFees();
+
+  // initial load: pre-select a country from the URL path, if present, without
+  // restricting the filter — the toggle above always stays clickable
+  (function initCountryFromPath(){
+    const seg = window.location.pathname.split('/').filter(Boolean).pop();
+    if(seg === 'hk') applyCountry('hk');
+    else if(seg === 'us') applyCountry('us');
+  })();
 
   const ADDRESS_CODE = 'SASOM';
   const addressCode = document.getElementById('addressCode');
