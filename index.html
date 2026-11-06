@@ -343,6 +343,10 @@
         <span data-en>*The US warehouse does not repack.</span>
         <span data-th>*โกดัง US ไม่มี repack</span>
       </div>
+      <div class="packing-note hidden" id="packingNoteHK">
+        <span data-en>*Pack in a box that fits the product as closely as possible — fees are calculated by weight vs. volume. For air shipments, total box dimensions (L+W+H) must not exceed 158cm.</span>
+        <span data-th>*แพ็คใส่กล่องที่พอดีกับตัวสินค้ามากที่สุด ชิปปิ้งคิดค่าส่งเทียบน้ำหนักกับปริมาตร หากส่งทางเครื่องบิน ขนาดกล่องรวมทุกด้านต้องไม่เกิน 158 ซม.</span>
+      </div>
     </div>
   </div>
 
@@ -537,6 +541,7 @@
   const addrUS = document.getElementById('addrUS');
   const addrHK = document.getElementById('addrHK');
   const packingNoteUS = document.getElementById('packingNoteUS');
+  const packingNoteHK = document.getElementById('packingNoteHK');
   const countryFilter = document.getElementById('countryFilter');
   let countryLocked = false;
 
@@ -548,6 +553,7 @@
     addrUS.classList.toggle('hidden', !isUS);
     addrHK.classList.toggle('hidden', isUS);
     packingNoteUS.classList.toggle('hidden', !isUS);
+    packingNoteHK.classList.toggle('hidden', isUS);
     renderFees();
     renderSchedule();
   }
