@@ -167,9 +167,12 @@
     font-size:14px;font-weight:600;display:flex;align-items:flex-start;gap:8px;
   }
   .warn-icon{flex-shrink:0;}
-  .packing-note{
-    font-size:13px;color:var(--sub);font-style:italic;margin:8px 0 0 26px;
+  .packing-list{list-style:none;margin:8px 0 0 26px;padding:0;}
+  .packing-list li{
+    position:relative;padding-left:14px;font-size:13px;color:var(--sub);line-height:1.5;
   }
+  .packing-list li + li{margin-top:6px;}
+  .packing-list li::before{content:'•';position:absolute;left:0;top:0;}
 
   .breadcrumb{
     font-size:12px;color:var(--sub);margin:-4px 0 16px;line-height:1.6;
@@ -339,14 +342,13 @@
         <span data-en>Every item must be bubble-wrapped to prevent damage in transit</span>
         <span data-th>ต้องห่อบับเบิ้ลทุกชิ้น เพื่อป้องกันของเสียหายระหว่างส่ง</span>
       </div>
-      <div class="packing-note" id="packingNoteUS">
-        <span data-en>*The US warehouse does not repack.</span>
-        <span data-th>*โกดัง US ไม่มี repack</span>
-      </div>
-      <div class="packing-note hidden" id="packingNoteHK">
-        <span data-en>*Pack in a box that fits the product as closely as possible — fees are calculated by weight vs. volume. For air shipments, total box dimensions (L+W+H) must not exceed 158cm.</span>
-        <span data-th>*แพ็คใส่กล่องที่พอดีกับตัวสินค้ามากที่สุด ชิปปิ้งคิดค่าส่งเทียบน้ำหนักกับปริมาตร หากส่งทางเครื่องบิน ขนาดกล่องรวมทุกด้านต้องไม่เกิน 158 ซม.</span>
-      </div>
+      <ul class="packing-list" id="packingNoteUS">
+        <li><span data-en>The US warehouse does not repack.</span><span data-th>โกดัง US ไม่มี repack</span></li>
+      </ul>
+      <ul class="packing-list hidden" id="packingNoteHK">
+        <li><span data-en>Pack in a box that fits the product as closely as possible — fees are calculated by weight vs. volume.</span><span data-th>แพ็คใส่กล่องที่พอดีกับตัวสินค้ามากที่สุด ชิปปิ้งคิดค่าส่งเทียบน้ำหนักกับปริมาตร</span></li>
+        <li><span data-en>For air shipments, total box dimensions (L+W+H) must not exceed 158cm.</span><span data-th>หากส่งทางเครื่องบิน ขนาดกล่องรวมทุกด้านต้องไม่เกิน 158 ซม.</span></li>
+      </ul>
     </div>
   </div>
 
